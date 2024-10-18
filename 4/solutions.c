@@ -25,6 +25,7 @@ void es4_1() {
 
 void es4_2() {
   char string[100];
+  printf("Enter the phrase: ");
   gets(string);
   char *o = string, *s = string;
 
@@ -58,7 +59,93 @@ void es4_2() {
   printf("e' palindroma\n");
 }
 
+void es4_3() {
+  char string[1000];
+  int key;
+  printf("Caesar says what do you say(max 160): ");
+  gets(string);
+  int size = strlen(string);
+
+  printf("Caesar says what is the key: ");
+  scanf("%d", &key);
+  for (int i = 0; i < size; ++i) {
+    string[i] = string[i] + key;
+  }
+  printf("%s", string);
+
+  printf("\nEnter a crypted message: ");
+  scanf("%s", string);
+  printf("Decrypting...\n");
+  for (int i = 0; i < size; ++i) {
+    string[i] = string[i] - key;
+  }
+  printf("%s", string);
+}
+
+int _isVowel(char ch) { return (strchr("aeiouAEIOU", ch) != NULL); }
+
+void es4_4() {
+  char string[100];
+  printf("Enter a word: ");
+  gets(string);
+
+  int i = 0;
+  int len = strlen(string);
+  int originalLen = strlen(string);
+  int index = 0;
+
+  while (string[i] != '\0') {
+    if (_isVowel(string[i])) {
+      for (int j = len; j > i; j--) {
+        string[j + 2] = string[j];
+      }
+      string[i + 1] = 'f';
+      string[i + 2] = string[i];
+      i += 3;
+      len += 2;
+
+    } else {
+      i++;
+    }
+  }
+  puts(string);
+}
+
+// sarebbe meglio usare un hashmap ehh
+void es4_5() {
+  char string[256];
+  printf("Inserisci una frase: ");
+  gets(string);
+  // initialize the array with 0 values
+  int occurrences[52] = {0};
+
+  for (size_t i = 0; i < strlen(string); i++) {
+    int c = string[i];
+    if (c >= 97 && c <= 122) {
+      occurrences[string[i] - 97]++;
+    }
+    if (c >= 65 && c <= 90) {
+      occurrences[string[i] - 39]++;
+    }
+  }
+
+  for (int i = 0; i < 26; i++) {
+    printf("%c | ", i + 97);
+    for (int j = 0; j < occurrences[i]; j++) {
+      printf("*");
+    }
+    printf("\n");
+  }
+  for (int i = 26; i < 52; i++) {
+    printf("%c | ", i + 39);
+    for (int j = 0; j < occurrences[i]; j++) {
+      printf("*");
+    }
+    printf("\n");
+  }
+}
+
 int main() {
-  es4_2();
+  es4_5();
   return 0;
 }
