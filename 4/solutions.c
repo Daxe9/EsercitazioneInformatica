@@ -23,7 +23,42 @@ void es4_1() {
   printf("%s", s);
 }
 
+void es4_2() {
+  char string[100];
+  gets(string);
+  char *o = string, *s = string;
+
+  // inline removing spaces
+  while (*s) {
+    if (*s != ' ' && (*s >= 65 && *s <= 90) || (*s >= 97 && *s <= 120)) {
+      *o++ = *s;
+    }
+    s++;
+  }
+  *o = '\0';
+
+  int len = strlen(string);
+  for (int i = 0; i < len; i++) {
+    if (string[i] >= 65 && string[i] <= 90) {
+      string[i] += 32;
+    }
+  }
+
+  int itIs = 1;
+  for (int i = 0; i < len; i++) {
+    if (string[i] != string[len - 1 - i]) {
+      itIs = 0;
+    }
+  }
+
+  printf("\nLa parola %s ", string);
+  if (!itIs) {
+    printf("non ");
+  }
+  printf("e' palindroma\n");
+}
+
 int main() {
-  es4_1();
+  es4_2();
   return 0;
 }
