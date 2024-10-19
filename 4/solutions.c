@@ -145,7 +145,114 @@ void es4_5() {
   }
 }
 
+void es4_6() {
+  int letters[150] = {0};
+  char word1[100], word2[100];
+  printf("Enter the first word: ");
+  gets(word1);
+  printf("Enter the second word: ");
+  gets(word2);
+
+  for (int i = 0; i < strlen(word1); ++i) {
+    letters[word1[i]]++;
+  }
+  for (int i = 0; i < strlen(word2); ++i) {
+    letters[word2[i]]--;
+  }
+  int isAllZeros = 1;
+  for (int i = 0; i < sizeof(letters) / sizeof(letters[0]) && isAllZeros; i++) {
+    if (letters[i] != 0) {
+      isAllZeros = 0;
+    }
+  }
+
+  if (isAllZeros) {
+    printf("Sono anagrammi!\n");
+  } else {
+    printf("Non sono anagrammi!\n");
+  }
+}
+
+void es4_7() {
+  int dim = 0;
+  printf("Lunghezza dellal Matrix quadrata: ");
+  scanf("%d", &dim);
+  int matrix[dim][dim];
+  int input;
+  for (int i = 0; i < dim; i++) {
+    for (int j = 0; j < dim; j++) {
+      printf("Valore in %d, %d:", i, j);
+      scanf("%d", &input);
+      matrix[i][j] = input;
+    }
+  }
+
+  // diagonale
+  int isDiagonal = 1;
+  for (int i = 0; i < dim && isDiagonal; i++) {
+    if (matrix[i][i] == 0) {
+      isDiagonal = 0;
+    }
+  }
+  printf("La matrice ");
+  if (!isDiagonal) {
+    printf("non ");
+  }
+  printf("e' diagonale\n");
+
+  int isSymmetric = 1;
+  // simmetrica alla diagonale
+  for (int i = 0; i < dim && isSymmetric; i++) {
+    for (int j = i + 1; j < dim; j++) {
+      if (matrix[i][j] != matrix[j][i]) {
+        isSymmetric = 0;
+      }
+    }
+  }
+
+  printf("La matrice ");
+  if (!isSymmetric) {
+    printf("non ");
+  }
+  printf("e' simmetrica");
+}
+
+void es4_8() {
+  int dim = 5;
+  int matrix[dim][dim];
+  for (int i = 0; i < dim; i++) {
+    for (int j = 0; j < dim; j++) {
+      matrix[i][j] = i * dim + j + 1;
+    }
+  }
+
+  // spirale
+  // p1 puntatore riga, p2 puntatore colonna
+  // p1p puntatore riga precedente, p2p puntatore colonna precedente
+  int p1 = 0, p1p, p2 = dim - 1, p2p;
+  while (p1 <= dim / 2 && p2 >= dim / 2) {
+    for (int i = p1; i <= p2; i++) {
+      printf("%d ", matrix[p1][i]);
+    }
+
+    for (int i = p1 + 1; i <= p2; i++) {
+      printf("%d ", matrix[i][p2]);
+    }
+
+    for (int i = p2 - 1; i >= p1; i--) {
+      printf("%d ", matrix[p2][i]);
+    }
+
+    for (int i = p2 - 1; i > p1; i--) {
+      printf("%d ", matrix[i][p1]);
+    }
+
+    p1++;
+    p2--;
+  }
+}
+
 int main() {
-  es4_5();
+  es4_8();
   return 0;
 }
