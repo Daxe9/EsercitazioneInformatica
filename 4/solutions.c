@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void es4_1() {
   char s1[20], s2[20], s[40];
@@ -218,18 +220,26 @@ void es4_7() {
 }
 
 void es4_8() {
-  int dim = 5;
+  int dim = 10;
   int matrix[dim][dim];
+
+  // tavola pitagorica
   for (int i = 0; i < dim; i++) {
     for (int j = 0; j < dim; j++) {
-      matrix[i][j] = i * dim + j + 1;
+      matrix[i][j] = (i + 1) * (j + 1);
     }
+  }
+
+  for (int i = 0; i < dim; i++) {
+    for (int j = 0; j < dim; j++) {
+      printf("%d ", matrix[i][j]);
+    }
+    printf("\n");
   }
 
   // spirale
   // p1 puntatore riga, p2 puntatore colonna
-  // p1p puntatore riga precedente, p2p puntatore colonna precedente
-  int p1 = 0, p1p, p2 = dim - 1, p2p;
+  int p1 = 0, p2 = dim - 1;
   while (p1 <= dim / 2 && p2 >= dim / 2) {
     for (int i = p1; i <= p2; i++) {
       printf("%d ", matrix[p1][i]);
@@ -252,7 +262,128 @@ void es4_8() {
   }
 }
 
+void es4_9() {
+  int dim = 10;
+  int max = 10;
+  int matrix[dim][dim];
+
+  for (int i = 0; i < dim; i++) {
+    for (int j = 0; j < dim; j++) {
+      matrix[i][j] = rand() % max;
+    }
+  }
+
+  int occurrences[2][10] = {0};
+  for (int i = 0; i < max; i++) {
+    occurrences[0][i] = i;
+  }
+
+  // print and found the most frequent number
+  for (int i = 0; i < dim; i++) {
+    for (int j = 0; j < dim; j++) {
+      printf("%d ", matrix[i][j]);
+      occurrences[1][matrix[i][j]]++;
+    }
+    printf("\n");
+  }
+
+  // sort
+  for (int i = 0; i < max; i++) {
+    int index = i;
+    for (int j = i + 1; j < max; j++) {
+      if (occurrences[1][index] < occurrences[1][j]) {
+        index = j;
+      }
+    }
+    // swap
+    if (i != index) {
+      int temp = occurrences[1][index];
+      occurrences[1][index] = occurrences[1][i];
+      occurrences[1][i] = temp;
+      temp = occurrences[0][index];
+      occurrences[0][index] = occurrences[0][i];
+      occurrences[0][i] = temp;
+    }
+  }
+
+  int mostFrequenNum = occurrences[0][0];
+  printf("\nThe most frequent number is %d with frequency of %d\n",
+         mostFrequenNum, occurrences[1][0]);
+  int minors[dim * dim], majors[dim * dim];
+  int mip = 0, mp = 0;
+
+  for (int i = 0; i < dim; i++) {
+    for (int j = 0; j < dim; j++) {
+      int number = matrix[i][j];
+      if (number > mostFrequenNum) {
+        majors[mp] = number;
+        mp++;
+      }
+      if (number < mostFrequenNum) {
+        minors[mip] = number;
+        mip++;
+      }
+    }
+  }
+
+  printf("Minors: \n");
+  for (int i = 0; i < mip; i++) {
+    printf("%d ", minors[i]);
+  }
+  printf("\nMajors: \n");
+  for (int i = 0; i < mp; i++) {
+    printf("%d ", majors[i]);
+  }
+
+  int isMonotone = 1;
+
+  for (int i = 0; i < mp - 1 && isMonotone; i++) {
+    if (majors[i + 1] < majors[i]) {
+      isMonotone = 0;
+    }
+  }
+
+  if (isMonotone) {
+    printf("\n3. Yes");
+  } else {
+    printf("\n3. No");
+  }
+}
+
+void es4_10() {
+  int dim_r = 0, dim_c = 0, input;
+  printf("Dimensione Riga: ");
+  scanf("%d", &dim_r);
+  printf("Dimensione Colonna: ");
+  scanf("%d", &dim_c);
+  int matrix[dim_r][dim_c];
+
+  for (int i = 0; i < dim_r; i++) {
+    for (int j = 0; j < dim_c; j++) {
+      printf("Value in %d, %d: ", i, j);
+      scanf("%d", &input);
+      matrix[i][j] = input;
+    }
+  }
+
+  int max_sum = 0;
+  int index = 0;
+  for (int i = 0; i < dim_r; i++) {
+    int sum = 0;
+    for (int j = 0; j < dim_c; j++) {
+      sum += matrix[i][j];
+    }
+    if (sum > max_sum) {
+      max_sum = sum;
+      index = i;
+    }
+  }
+
+  printf("La somma massima e' %d della riga %d", max_sum, index);
+}
+
 int main() {
-  es4_8();
+  srand(time(NULL));
+  es4_10();
   return 0;
 }
